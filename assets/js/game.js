@@ -30,12 +30,21 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy) {
+    // Keep track of who goes first
+    var isPlayerTurn = true;
+    // Randomly change turn order
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
+
     console.log(enemy);
     //repeat and execute as long as the enemy robot is alive
     while(enemy.health > 0 && playerInfo.health > 0) {
+        if (isPlayerTurn) {
+        
         // ask user if they'd like to fight or skip using fightOrSkip function
         if (fightOrSkip()) {
-            // if true, eave fight by breaking loop
+            // if true, leave fight by breaking loop
             break;
         }
             var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -51,12 +60,17 @@ var fight = function(enemy) {
             // Check enemy's health
             if (enemy.health <= 0) {
                 window.alert(enemy.name + " has died!");
+
+                // Award player money for winning
+                playerInfo.money = playerInfo.money + 20;
+
                 break;
-            }
-            else {
+            } else {
             window.alert(enemy.name + " still has " + enemy.health + " health left.");
             }
-
+        
+        // Player gets attacked first
+        } else {
             var damage = randomNumber(enemy.attack - 3, enemy.attack)
             
             // Subtract the value of 'enemy.attack' from the value of 'playerInfo.health' and use that result to update the value in the 'playerInfo.health' variable
@@ -75,7 +89,10 @@ var fight = function(enemy) {
             else {
                 window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
             }
-        } 
+        }
+        // Switch turn order for next round
+        isPlayerTurn = !isPlayerTurn;
+    } 
 };
 
 // Function to start a new game
